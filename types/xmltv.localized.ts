@@ -1,109 +1,28 @@
 /**
- * A representation of XMLTV data in TypeScript, taken from @iptv/xmltv.
+ * A simplified version of XMLTV data in TypeScript, with directly localized strings.
  *
- * @see http://wiki.xmltv.org/index.php/XmltvFormat
+ * It's probably not valid XMLTV per se but it should be easier to use in a localized program.
  */
 
-/**
- * A URL to an image about the programme.
- *
- * The type of the image may be identified by the 'type' attribute. For programmes
- * this could be 'poster' or 'backdrop' (marketing promo photos)  or 'still' (screenshot from the
- * programme itself).
- *
- * If multiple image elements of a particular type are given, the most authoritative or official
- * images should be listed first.
- *
- * The `system` attribute may be used to identify the source of the image, or some useful feature
- * of the target (e.g. 'imdb','tmdb',etc.).
- *
- * The `orient` attribute defines the orientation of the image "P" portrait or "L" landscape
- *
- * The `size` attribute may be used to indicate the relative size of the image.
- * Possible values are:
- * "1" is < 200px in its largest dimension
- * "2" is 200-400px in its largest dimension
- * "3" is > 400px in its largest dimension
- * Multiple images of different sizes is permitted (e.g. small poster and large poster).
- */
-export type XmltvImage = {
-  /**
-   * Type of image
-   */
-  type?: 'poster' | 'backdrop' | 'still';
-
-  /**
-   * URL of the image
-   */
-  _value: string;
-
-  /**
-   * Size of the image
-   *
-   * Possible values are:
-   * "1" is < 200px in its largest dimension
-   * "2" is 200-400px in its largest dimension
-   * "3" is > 400px in its largest dimension
-   */
-  size?: 1 | 2 | 3;
-
-  /**
-   * Orientation of the image
-   *
-   * Possible values are:
-   * - "L" = landscape
-   * - "P" = portrait
-   */
-  orient?: 'L' | 'P' | 'l' | 'p';
-
-  /**
-   * A string to describe where the image came from, eg IMDB
-   */
-  system?: string;
-};
-
-/**
- * Similar to XmltvImage but with a types for the credit images.
- *
- * It could be 'person' (general portfolio picture of the person) or 'character'
- * (photo taken from the programme showing the actor in character).
- */
-export type XmltvCreditImage = XmltvImage & {
-  /**
-   * Type of image
-   */
-  type?: 'person' | 'character';
-};
+import type {
+  XmltvAudio,
+  XmltvEpisodeNumber,
+  XmltvIcon,
+  XmltvImage,
+  XmltvPreviouslyShown,
+  XmltvRating,
+  XmltvReview,
+  XmltvStarRating,
+  XmltvStringWithLang,
+  XmltvSubtitle,
+  XmltvUrl,
+  XmltvVideo,
+} from './xmltv.i18n.ts';
 
 /**
  * A representation of a person in an XMLTV programme object.
  */
-export type XmltvPerson = {
-  /**
-   * The name of the person.
-   */
-  _value: string;
-
-  /**
-   * The role of the actor in the programme eg Bryan Cranston's role in Breaking Bad is "Walter White".
-   */
-  role?: string;
-
-  /**
-   * Whether the person is a guest star or a regular cast member.
-   */
-  guest?: boolean;
-
-  /**
-   * An image of the person.
-   */
-  image?: XmltvCreditImage[];
-
-  /**
-   * The URL of the person.
-   */
-  url?: XmltvUrl[];
-};
+export type XmltvLocalizedPerson = string;
 
 /**
  * A representation of the credits for an XMLTV programme object.
@@ -118,342 +37,109 @@ export type XmltvPerson = {
  *
  * URL can be, for example, a link to a webpage with more information about the actor, director, etc..
  */
-export type XmltvCredits = {
+export type XmltvLocalizedCredits = {
   /**
    * The director(s) of the programme.
    */
-  director?: XmltvPerson[];
+  director?: XmltvLocalizedPerson[];
 
   /**
    * The actor(s) in the programme.
    */
-  actor?: XmltvPerson[];
+  actor?: XmltvLocalizedPerson[];
 
   /**
    * The writer(s) of the programme.
    */
-  writer?: XmltvPerson[];
+  writer?: XmltvLocalizedPerson[];
 
   /**
    * The adapter(s) of the programme.
    */
-  adapter?: XmltvPerson[];
+  adapter?: XmltvLocalizedPerson[];
 
   /**
    * The producer(s) of the programme.
    */
-  producer?: XmltvPerson[];
+  producer?: XmltvLocalizedPerson[];
 
   /**
    * The composer(s) of the programme.
    */
-  composer?: XmltvPerson[];
+  composer?: XmltvLocalizedPerson[];
 
   /**
    * The editor(s) of the programme.
    */
-  editor?: XmltvPerson[];
+  editor?: XmltvLocalizedPerson[];
 
   /**
    * The presenter(s) of the programme.
    */
-  presenter?: XmltvPerson[];
+  presenter?: XmltvLocalizedPerson[];
 
   /**
    * The commentator(s) of the programme.
    */
-  commentator?: XmltvPerson[];
+  commentator?: XmltvLocalizedPerson[];
 
   /**
    * The guest(s) of the programme.
    */
-  guest?: XmltvPerson[];
+  guest?: XmltvLocalizedPerson[];
 };
 
 /**
- * A way to define multiple strings with different langs for the same value.
+ * The channel display name.
  */
-export type XmltvStringWithLang = {
-  /**
-   * The value of the string
-   */
-  _value: string;
-
-  /**
-   * The lang code of the string eg. "en" for English, "es" for Spanish, etc.
-   */
-  lang?: string;
-};
+export type XmltvLocalizedDisplayName = string;
 
 /**
- * The channel display name with an optional language attribute.
+ * The title of a programme.
  */
-export type XmltvDisplayName = XmltvStringWithLang;
+export type XmltvLocalizedTitle = string;
 
 /**
- * The title of a programme with an optional language attribute.
+ * The subtitle of a programme.
  */
-export type XmltvTitle = XmltvStringWithLang;
+export type XmltvLocalizedSubTitle = string;
 
 /**
- * The subtitle of a programme with an optional language attribute.
+ * The description of a programme.
  */
-export type XmltvSubTitle = XmltvStringWithLang;
+export type XmltvLocalizedDesc = string;
 
 /**
- * The description of a programme with an optional language attribute.
+ * The category of a programme.
  */
-export type XmltvDesc = XmltvStringWithLang;
+export type XmltvLocalizedCategory = string;
 
 /**
- * The category of a programme with an optional language attribute.
+ * The keyword related to a programme.
  */
-export type XmltvCategory = XmltvStringWithLang;
+export type XmltvLocalizedKeyword = string;
 
 /**
- * The keyword related to a programme with an optional language attribute.
+ * The language of a programme.
  */
-export type XmltvKeyword = XmltvStringWithLang;
+export type XmltvLocalizedLanguage = string;
 
 /**
- * The language of a programme with an optional language attribute.
+ * The original language of a programme.
  */
-export type XmltvLanguage = XmltvStringWithLang;
+export type XmltvLocalizedOrigLanguage = string;
 
 /**
- * The original language of a programme with an optional language attribute.
+ * The country where a programme was produced.
  */
-export type XmltvOrigLanguage = XmltvStringWithLang;
-
-/**
- * The country where a programme was produced with an optional language attribute.
- */
-export type XmltvCountry = XmltvStringWithLang;
-
-/**
- * Object describing an icon
- *
- * The icon element is used to specify an image that represents the programme or channel,
- * typically a logo or thumbnail image. The src attribute of the icon element is required
- * and specifies the URL of the image file. The width and height attributes are optional
- * and specify the dimensions of the image in pixels. The icon element is optional and
- * can be used within the channel and programme elements to provide visual information
- * about the channel or programme being described.
- */
-export type XmltvIcon = {
-  /**
-   * URL of the icon
-   */
-  src: string;
-
-  /**
-   * Width of the icon
-   */
-  width?: number;
-
-  /**
-   * Height of the icon
-   */
-  height?: number;
-};
-
-/**
- * Object describing a URL, used in the programme and channel objects.
- */
-export type XmltvUrl = {
-  /**
-   * Value of the URL
-   */
-  _value: string;
-
-  /**
-   * System of the URL, eg "imdb", "thetvdb", etc.
-   */
-  system?: string;
-};
-
-/**
- * Episode number
- */
-export type XmltvEpisodeNumber = {
-  /**
-   * The episode number as a standard SxxExx string.
-   * This is the preferred way to specify the episode number.
-   */
-  system?: 'onscreen' | 'xmltv_ns';
-
-  /**
-   * The episode number as a XMLTV episode number string eg. "2.3.2".
-   */
-  _value?: string;
-};
-
-/**
- * Object describing details of the programme's video
- */
-export type XmltvVideo = {
-  /**
-   * Whether this programme has a picture (no, in the case of radio stations broadcast
-   * on TV or 'Blue'). If this attribute is missing, it is assumed to be `true`.
-   */
-  present?: boolean;
-
-  /**
-   * `true` for colour, `false` for black-and-white.
-   */
-  colour?: boolean;
-
-  /**
-   * The horizontal:vertical aspect ratio, eg `4:3` or `16:9`.
-   */
-  aspect?: string;
-
-  /**
-   * Information on the quality, eg `HDTV`, `800x600`.
-   */
-  quality?: string;
-};
-
-/**
- * The programme rating eg TV-MA, PG, etc.
- */
-export type XmltvRating = {
-  /**
-   * Value of the rating
-   */
-  value: string;
-
-  /**
-   * System of the rating eg. MPAA, VCHIP, etc.
-   */
-  system?: string;
-
-  /**
-   * Icon of the rating
-   */
-  icon?: XmltvIcon[];
-};
-
-/**
- * Audio details, similar to video details.
- *
- * `present`: Whether this programme has any sound at all.
- * `stereo`: Description of the stereo-ness of the sound.  Legal values
- * are currently `mono`,`stereo`,`dolby`,`dolby digital`,`bilingual` and `surround`.
- */
-export type XmltvAudio = {
-  /**
-   * Whether this programme has any sound at all.
-   */
-  present?: boolean;
-
-  /**
-   * Description of the stereo-ness of the sound.
-   *
-   * `bilingual` in this case refers to a single audio stream where the left and right
-   * channels contain monophonic audio  in different langs.  Other values may be added later.
-   */
-  stereo?: 'mono' | 'stereo' | 'dolby' | 'dolby digital' | 'bilingual' | 'surround';
-};
-
-/**
- * The true length of the programme, not counting advertisements or trailers.
- * But this does take account of any bits which were cut out of the broadcast version
- * - eg if a two hour film is cut to 110 minutes and then padded with 20 minutes of advertising,
- * length will be 110 minutes even though end time minus start time is 130 minutes.
- */
-export type XmltvLength = {
-  /**
-   * The length of the programme
-   */
-  _value: number;
-
-  /**
-   * The units of the length
-   *
-   */
-  units: 'seconds' | 'minutes' | 'hours';
-};
-
-/**
- * These can be either `teletext` (sent digitally, and displayed at the viewer's request),
- * `onscreen` (superimposed on the picture and impossible to get rid of),
- * or 'deaf-signed' (in-vision signing for users of sign lang).
- *
- * You can have multiple subtitle streams to handle different langs.
- * lang for subtitles is specified in the same way as for programmes.
- */
-export type XmltvSubtitle = {
-  type?: 'teletext' | 'onscreen' | 'deaf-signed';
-  language?: XmltvStringWithLang;
-};
-
-/**
- * When and where the programme was last shown, if known.  Normally in TV listings 'repeat'
- * means 'previously shown on this channel', but if you don't know what channel the old
- * screening was on (but do know that it happened) then you can omit the 'channel' attribute.
- * Similarly you can omit the 'start' attribute if you don't know when the previous transmission
- * was (though you can of course give just the year, etc.).
- */
-export type XmltvPreviouslyShown = {
-  start?: Date;
-  channel?: string;
-};
-
-/**
- * A review of the programme.
- * Either the text of the review, or a URL that links to it.
- */
-export type XmltvReview = {
-  /**
-   * The value of this element must be either the text of the review, or a URL that links to it.
-   */
-  _value: string;
-
-  /**
-   * The type of review
-   */
-  type: 'text' | 'url';
-
-  /**
-   * The source of the review
-   */
-  source?: string;
-
-  /**
-   * The author of the review
-   */
-  reviewer?: string;
-
-  /**
-   * The lang of the review
-   */
-  lang?: string;
-};
-
-export type XmltvStarRating = {
-  /**
-   * The value of this element should be 'N / M', for example one star out of a possible five stars would be '1 / 5'.
-   */
-  value: string;
-
-  /**
-   * The system used to provide the star rating
-   */
-  system?: string;
-
-  /**
-   * Icon for the star rating
-   */
-  icon?: XmltvIcon[];
-};
+export type XmltvLocalizedCountry = string;
 
 /**
  * Object describing a programme
  */
-export type XmltvProgramme = {
+export type XmltvLocalizedProgramme = {
   /**
-   * The channel id for the program (see `XmltvChannel`)
+   * The channel id for the program (see `XmltvLocalizedChannel`)
    * This is a string that uniquely identifies the channel on which the programme is broadcast.
    *
    * @example
@@ -466,20 +152,16 @@ export type XmltvProgramme = {
   channel: string;
 
   /**
-   * Title of the program in different langs
+   * Title of the program
    *
    * @example
    * ```typescript
    * {
-   *   title: [
-   *     { _value: 'The Simpsons', lang: 'en' },
-   *     { _value: 'Los Simpson', lang: 'es' },
-   *     { _value: 'Les Simpson', lang: 'fr' },
-   *   ]
+   *   title: 'The Simpsons'
    * }
    * ```
    */
-  title: XmltvTitle[];
+  title: XmltvLocalizedTitle;
 
   /**
    * Start time of the program
@@ -595,36 +277,28 @@ export type XmltvProgramme = {
   clumpidx?: string;
 
   /**
-   * Subtitle of the program in different langs
+   * Subtitle of the program
    *
    * @example
    * ```typescript
    * {
-   *   subTitle: [
-   *     { _value: 'Treehouse of Horror XXVII', lang: 'en' },
-   *     { _value: 'El árbol de los horrores XXVII', lang: 'es' },
-   *     { _value: "Le manoir de l'horreur XXVII", lang: 'fr' },
-   *   ]
+   *   subTitle: 'Treehouse of Horror XXVII'
    * }
    * ```
    */
-  subTitle?: XmltvSubTitle[];
+  subTitle?: XmltvLocalizedSubTitle[];
 
   /**
-   * Description of the program in different langs
+   * Description of the program
    *
    * @example
    * ```typescript
    * {
-   *   desc: [
-   *     { _value: 'The Simpsons go to a haunted house.', lang: 'en' },
-   *     { _value: 'Los Simpson van a una casa embrujada.', lang: 'es' },
-   *     { _value: 'Les Simpson vont dans une maison hantée.', lang: 'fr' },
-   *   ]
+   *   desc: 'The Simpsons go to a haunted house.'
    * }
    * ```
    */
-  desc?: XmltvDesc[];
+  desc?: XmltvLocalizedDesc;
 
   /**
    * Credits for the program, including director, actors, writers, etc.
@@ -633,17 +307,17 @@ export type XmltvProgramme = {
    * ```typescript
    * {
    *   credits: {
-   *     directors: [{ _value: 'David Silverman' }],
+   *     directors: ['David Silverman'],
    *     actors: [
-   *       { _value: 'Dan Castellaneta', role: 'Homer Simpson' },
-   *       { _value: 'Julie Kavner', role: 'Marge Simpson' },
-   *       { _value: 'Nancy Cartwright', role: 'Bart Simpson' },
-   *       { _value: 'Yeardley Smith', role: 'Lisa Simpson' },
+   *       'Dan Castellaneta',
+   *       'Julie Kavner',
+   *       'Nancy Cartwright',
+   *       'Yeardley Smith',
    *     ],
    *   }
    * }
    */
-  credits?: XmltvCredits;
+  credits?: XmltvLocalizedCredits;
 
   /**
    * Date of the program in YYYYMMDD format
@@ -665,31 +339,23 @@ export type XmltvProgramme = {
    * @example
    * ```typescript
    * {
-   *   categories: [
-   *     { : 'Comedy', lang: 'en' },
-   *     { : 'Comedia', lang: 'es' },
-   *     { : 'Comédie', lang: 'fr' },
-   *   ]
+   *   categories: ['Comedy']
    * }
    * ```
    */
-  category?: XmltvCategory[];
+  category?: XmltvLocalizedCategory[];
 
   /**
-   * Keyword for the program in different langs
+   * Keyword for the program
    *
    * @example
    * ```typescript
    * {
-   *   keywords: [
-   *     { _value: 'Halloween', lang: 'en' },
-   *     { _value: 'Halloween', lang: 'es' },
-   *     { _value: 'Halloween', lang: 'fr' },
-   *   ]
+   *   keywords: ['Halloween']
    * }
    * ```
    */
-  keyword?: XmltvKeyword[];
+  keyword?: XmltvLocalizedKeyword[];
 
   /**
    * language used in the program
@@ -701,7 +367,7 @@ export type XmltvProgramme = {
    * }
    * ```
    */
-  language?: XmltvLanguage;
+  language?: XmltvLocalizedLanguage;
 
   /**
    * Original lang of the program
@@ -713,7 +379,7 @@ export type XmltvProgramme = {
    * }
    * ```
    */
-  origLanguage?: XmltvOrigLanguage;
+  origLanguage?: XmltvLocalizedOrigLanguage;
 
   /**
    * Length of the program
@@ -771,7 +437,7 @@ export type XmltvProgramme = {
    * }
    * ```
    */
-  country?: XmltvCountry;
+  country?: XmltvLocalizedCountry;
 
   /**
    * Episode number for the program in either "onscreen" or "xmltv_ns" format
@@ -1040,7 +706,7 @@ export type XmltvProgramme = {
 /**
  * The channel details
  */
-export type XmltvChannel = {
+export type XmltvLocalizedChannel = {
   /**
    * The channel id
    *
@@ -1059,17 +725,11 @@ export type XmltvChannel = {
    * @example
    * ```typescript
    * {
-   *   displayName: [{
-   *     _value: 'Channel 1',
-   *     lang: 'en'
-   *   },{
-   *     _value: 'Kanal 1',
-   *     lang: 'de'
-   *   }]
+   *   displayName: 'Channel 1'
    * }
    * ```
    */
-  displayName: XmltvDisplayName[];
+  displayName: XmltvLocalizedDisplayName;
 
   /**
    * The channel icon
@@ -1100,9 +760,9 @@ export type XmltvChannel = {
   url?: XmltvUrl[];
 };
 
-export type Xmltv = {
-  channels?: XmltvChannel[];
-  programmes?: XmltvProgramme[];
+export type XmltvLocalized = {
+  channels: XmltvLocalizedChannel[];
+  programmes: XmltvLocalizedProgramme[];
   date?: Date;
   sourceInfoName?: string;
   generatorInfoName?: string;
@@ -1110,39 +770,3 @@ export type Xmltv = {
   sourceDataUrl?: string;
   generatorInfoUrl?: string;
 };
-
-/**
- * A single XMLTV DOM node
- *
- * @example
- * ```typescript
- * {
- *   tagName: 'programme',
- *   attributes: {
- *     start: '20210101000000 +0100',
- *     stop: '20210101010000 +0100',
- *     channel: 'channel-1'
- *   },
- *   children: [{
- *     tagName: 'title',
- *     attributes: {
- *       lang: 'en'
- *     },
- *     children: ['Programme title']
- *   }]
- * }
- * ```
- */
-export type XmltvDomNode =
-  | {
-      tagName: string;
-      attributes: Record<string, any>;
-      children: Array<XmltvDomNode | string>;
-    }
-  | string;
-
-/**
- * A collection of XMLTV DOM nodes to form a valid XMLTV document
- *
- */
-export type XmltvDom = XmltvDomNode[];
