@@ -8,9 +8,9 @@ import type { Xmltv } from '../types/xmltv.i18n.ts';
  * @returns {Xmltv} The parsed XMLTV file content.
  */
 export function parseXmltvTextContent(xmltvTextContent: string): Xmltv {
-  const xmltv = parseXmltv(xmltvTextContent);
-  xmltv.generatorInfoName = 'Téléhoraire';
-  xmltv.generatorInfoUrl = 'https://github.com/yannbertrand/telehoraire';
+	const xmltv = parseXmltv(xmltvTextContent);
+	xmltv.generatorInfoName = 'Téléhoraire';
+	xmltv.generatorInfoUrl = 'https://github.com/yannbertrand/telehoraire';
 
-  return xmltv;
+	return xmltv;
 }

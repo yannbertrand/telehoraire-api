@@ -1,3 +1,3 @@
 export type EnvironmentConfig = {
-  sourceXmltvUrl: URL;
+	sourceXmltvUrl: URL;
 };
