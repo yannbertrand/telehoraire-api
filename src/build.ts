@@ -40,6 +40,21 @@ export async function build(): Promise<void> {
 		JSON.stringify(localizedPrime),
 	);
 	console.log('Wrote dist/tnt.prime.fr.json file');
+
+	for (const channel of localizedPrime.channels) {
+		await writeFile(
+			resolve('dist', `${channel.id}.prime.json`),
+			JSON.stringify({
+				...localizedPrime,
+				channels: [channel],
+				programmes: localizedPrime.programmes.filter(
+					(programme) => programme.channel === channel.id,
+				),
+			}),
+		);
+		// console.log(`Wrote dist/${channel.id}.prime.json file`);
+		console.log(channel.displayName);
+	}
 }
 
 await build();
