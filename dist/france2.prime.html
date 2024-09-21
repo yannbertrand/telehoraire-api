@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Téléhoraire France 2 prime</title>
+    <link rel="stylesheet" href="css/pico.min.css">
+</head>
+
+<body>
+    <main class="container">
+        <h1>Téléhoraire</h1>
+        <hgroup>
+            <h2>France2</h2>
+            <p>Ce soir</p>
+        </hgroup>
+
+        <div id="programmes"></div>
+
+        <script type="module">
+            const xmltv = await fetch('France2.fr.prime.json').then(response => response.json());
+            const $container = document.getElementById('programmes');
+
+            const $programmes = xmltv.programmes?.map(programme => {
+                const $programme = document.createElement('article');
+                const start = new Date(programme.start);
+                const stop = new Date(programme.stop);
+                const total = stop.getTime() - start.getTime();
+                const progress = Date.now() - start.getTime();
+                $programme.innerHTML += `<h3>${programme.title}</h3>`
+                $programme.innerHTML += `<div style="display: flex; flex-wrap: wrap; gap: var(--pico-grid-column-gap)">${programme.category.map(category => getPill(category).outerHTML).join('')}</div>`
+                $programme.innerHTML += `<div><p style="padding-top: var(--pico-spacing); color: var(--pico-muted-color)">${programme.desc}</p></div>`;
+                $programme.innerHTML += `<footer>${start.toLocaleTimeString('fr-FR', { timeStyle: 'short' })} - ${stop.toLocaleTimeString('fr-FR', { timeStyle: 'short' })}</footer>`;
+                $programme.innerHTML += `<progress value="${progress}" max="${total}" />`;
+                return $programme;
+            });
+
+            $container.append(...$programmes);
+
+            function getPill(category) {
+                const $pill = document.createElement('span');
+                $pill.style = `
+                    background-color: var(--pico-secondary-background);
+                    border-radius: var(--pico-border-radius);
+                    color: var(--pico-secondary-inverse);
+                    display: inline-block;
+                    font-size: calc(var(--pico-font-size) * 0.7);
+                    padding: calc(var(--pico-spacing) / 4) calc(var(--pico-spacing));
+                `;
+                $pill.textContent = category;
+                return $pill;
+            }
+        </script>
+    </main>
+</body>
+
+</html>
