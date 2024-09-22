@@ -34,6 +34,20 @@ export async function build(): Promise<void> {
 	await writeFile(resolve('dist', 'tnt.fr.json'), JSON.stringify(localized));
 	console.log('Wrote dist/tnt.fr.json file');
 
+	for (const channel of localized.channels) {
+		await writeFile(
+			resolve('dist', `${channel.id}.json`),
+			JSON.stringify({
+				...localized,
+				channels: [channel],
+				programmes: localized.programmes.filter(
+					(programme) => programme.channel === channel.id,
+				),
+			}),
+		);
+		console.log(`Wrote dist/${channel.id}.json file`);
+	}
+
 	const localizedPrime = localize(prime, 'fr');
 	await writeFile(
 		resolve('dist', 'tnt.prime.fr.json'),
