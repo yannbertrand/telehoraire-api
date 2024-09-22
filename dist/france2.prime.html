@@ -11,6 +11,7 @@
 <body>
     <main class="container">
         <h1>Téléhoraire</h1>
+        <hr>
         <hgroup>
             <h2>France2</h2>
             <p>Ce soir</p>
@@ -18,21 +19,57 @@
 
         <div id="programmes"></div>
 
+        <template id="programme">
+            <article>
+                <div style="display: flex; flex-direction: row; gap: var(--pico-spacing)">
+                    <img slot="image" src="" alt=""
+                        style="width: 60px; height: 140px; object-fit: cover; border-radius: var(--pico-border-radius);">
+                    <div>
+                        <h3 slot="title">PROGRAMME TITLE</h3>
+                        <div slot="categories" style="display: flex; flex-wrap: wrap; gap: var(--pico-grid-column-gap)">
+                        </div>
+                        <p slot="description" style="padding-top: var(--pico-spacing); color: var(--pico-muted-color)">
+                        </p>
+                    </div>
+                </div>
+                <footer slot="time"></footer>
+                <div slot="real-time-progress"><progress value="50" max="100" /></div>
+            </article>
+        </template>
+
         <script type="module">
             const xmltv = await fetch('France2.fr.prime.json').then(response => response.json());
             const $container = document.getElementById('programmes');
+            const $programmeTemplate = document.getElementById('programme');
+
+            function initProgrammeElement(title, image, categories, description, time, realTimeProgress) {
+                const $programme = $programmeTemplate.content.cloneNode(true)
+
+                $programme.querySelector('[slot="title"]').textContent = title;
+                $programme.querySelector('[slot="image"]').src = image;
+                $programme.querySelector('[slot="categories"]').innerHTML = categories;
+                $programme.querySelector('[slot="description"]').textContent = description;
+                $programme.querySelector('[slot="time"]').textContent = time;
+                $programme.querySelector('[slot="real-time-progress"]').innerHTML = realTimeProgress;
+
+                return $programme;
+            }
 
             const $programmes = xmltv.programmes?.map(programme => {
-                const $programme = document.createElement('article');
+                const title = programme.title;
+                const image = programme.icon[0].src;
+                const categories = programme.category.map(category => getPill(category).outerHTML).join('')
+                const description = programme.desc;
                 const start = new Date(programme.start);
                 const stop = new Date(programme.stop);
+                const dateTimeFormat = new Intl.DateTimeFormat('fr-FR', { timeStyle: 'short' });
+                const time = dateTimeFormat.formatRange(start, stop);
                 const total = stop.getTime() - start.getTime();
                 const progress = Date.now() - start.getTime();
-                $programme.innerHTML += `<h3>${programme.title}</h3>`
-                $programme.innerHTML += `<div style="display: flex; flex-wrap: wrap; gap: var(--pico-grid-column-gap)">${programme.category.map(category => getPill(category).outerHTML).join('')}</div>`
-                $programme.innerHTML += `<div><p style="padding-top: var(--pico-spacing); color: var(--pico-muted-color)">${programme.desc}</p></div>`;
-                $programme.innerHTML += `<footer>${start.toLocaleTimeString('fr-FR', { timeStyle: 'short' })} - ${stop.toLocaleTimeString('fr-FR', { timeStyle: 'short' })}</footer>`;
-                $programme.innerHTML += `<progress value="${progress}" max="${total}" />`;
+                const realTimeProgress = `<progress value="${progress}" max="${total}" />`
+
+                const $programme = initProgrammeElement(title, image, categories, description, time, realTimeProgress);
+
                 return $programme;
             });
 
