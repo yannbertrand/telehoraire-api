@@ -31,7 +31,7 @@ describe('#getTonightPrime', () => {
 		).toBe(true);
 	});
 
-	it('should filter programmes with duration < 30min (before midnight)', async () => {
+	it('should filter programmes with duration <= 30min (before midnight)', async () => {
 		// when
 		const programmes = getTonightPrime(xmltvProgrammes, today);
 

@@ -20,6 +20,6 @@ export function getTonightPrime(programmes: XmltvProgramme[], date: Date) {
 				new Date(stopOrTomorrow).getTime() -
 				new Date(programme.start).getTime();
 			const thirthyMinutesInMilliseconds = 30 * 60 * 1000;
-			return duration >= thirthyMinutesInMilliseconds;
+			return duration > thirthyMinutesInMilliseconds;
 		});
 }
