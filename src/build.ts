@@ -5,6 +5,7 @@ import { parseXmltvTextContent } from './parse.ts';
 import { writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { localize } from './localize.ts';
+import { filterChannel } from './transforms/filter-channel.ts';
 import { getTonightPrime } from './transforms/tonight-prime.ts';
 
 export async function build(): Promise<void> {
@@ -37,13 +38,7 @@ export async function build(): Promise<void> {
 	for (const channel of localized.channels) {
 		await writeFile(
 			resolve('dist', `${channel.id}.json`),
-			JSON.stringify({
-				...localized,
-				channels: [channel],
-				programmes: localized.programmes.filter(
-					(programme) => programme.channel === channel.id,
-				),
-			}),
+			JSON.stringify(filterChannel(localized, channel.id)),
 		);
 		console.log(`Wrote dist/${channel.id}.json file`);
 	}
@@ -58,16 +53,9 @@ export async function build(): Promise<void> {
 	for (const channel of localizedPrime.channels) {
 		await writeFile(
 			resolve('dist', `${channel.id}.prime.json`),
-			JSON.stringify({
-				...localizedPrime,
-				channels: [channel],
-				programmes: localizedPrime.programmes.filter(
-					(programme) => programme.channel === channel.id,
-				),
-			}),
+			JSON.stringify(filterChannel(localizedPrime, channel.id)),
 		);
-		// console.log(`Wrote dist/${channel.id}.prime.json file`);
-		console.log(channel.displayName);
+		console.log(`Wrote dist/${channel.id}.prime.json file`);
 	}
 }
 
