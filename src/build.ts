@@ -21,10 +21,7 @@ export async function build(): Promise<void> {
 	await writeFile(resolve('dist', 'tnt.i18n.json'), JSON.stringify(xmltv));
 	console.log('Wrote dist/tnt.i18n.json file');
 
-	const prime = {
-		...xmltv,
-		programmes: getTonightPrime(xmltv.programmes, new Date()),
-	};
+	const prime = getTonightPrime(xmltv, new Date());
 	await writeFile(
 		resolve('dist', 'tnt.prime.i18n.json'),
 		JSON.stringify(prime),

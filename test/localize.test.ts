@@ -47,9 +47,7 @@ describe('#localize', () => {
 		it('should localize programmes title', () => {
 			// when
 			const result = localize(
-				{
-					programmes: getTonightPrime(xmltv.programmes, new Date('2024-09-19')),
-				},
+				getTonightPrime(xmltv, new Date('2024-09-19')),
 				'fr',
 			);
 
@@ -65,9 +63,7 @@ describe('#localize', () => {
 		it('should localize programmes subTitle', () => {
 			// when
 			const result = localize(
-				{
-					programmes: getTonightPrime(xmltv.programmes, new Date('2024-09-19')),
-				},
+				getTonightPrime(xmltv, new Date('2024-09-19')),
 				'fr',
 			);
 
@@ -85,9 +81,7 @@ describe('#localize', () => {
 		it('should localize programmes desc', () => {
 			// when
 			const result = localize(
-				{
-					programmes: getTonightPrime(xmltv.programmes, new Date('2024-09-19')),
-				},
+				getTonightPrime(xmltv, new Date('2024-09-19')),
 				'fr',
 			);
 
@@ -109,9 +103,7 @@ describe('#localize', () => {
 		it('should localize programmes category list', () => {
 			// when
 			const result = localize(
-				{
-					programmes: getTonightPrime(xmltv.programmes, new Date('2024-09-19')),
-				},
+				getTonightPrime(xmltv, new Date('2024-09-19')),
 				'fr',
 			);
 
@@ -136,9 +128,7 @@ describe('#localize', () => {
 		it('should localize programmes credits list', () => {
 			// when
 			const result = localize(
-				{
-					programmes: getTonightPrime(xmltv.programmes, new Date('2024-09-19')),
-				},
+				getTonightPrime(xmltv, new Date('2024-09-19')),
 				'fr',
 			);
 
