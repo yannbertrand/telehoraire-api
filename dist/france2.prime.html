@@ -26,7 +26,9 @@
                         style="width: 60px; height: 140px; object-fit: cover; border-radius: var(--pico-border-radius);">
                     <div>
                         <hgroup>
-                            <h3 slot="title">PROGRAMME TITLE</h3>
+                            <h3 style="display: flex; justify-content: space-between;"><span slot="title">PROGRAMME
+                                    TITLE</span><span slot="episode-number"
+                                    style="font-size: calc(var(--pico-font-size) * 0.7);"></span></h3>
                             <p slot="sub-title"></p>
                         </hgroup>
                         <div slot="categories" style="display: flex; flex-wrap: wrap; gap: var(--pico-grid-column-gap)">
@@ -45,11 +47,12 @@
             const $container = document.getElementById('programmes');
             const $programmeTemplate = document.getElementById('programme');
 
-            function initProgrammeElement(title, subTitle, image, categories, description, time, realTimeProgress) {
+            function initProgrammeElement(title, subTitle, episodeNumber, image, categories, description, time, realTimeProgress) {
                 const $programme = $programmeTemplate.content.cloneNode(true)
 
                 $programme.querySelector('[slot="title"]').textContent = title;
                 $programme.querySelector('[slot="sub-title"]').textContent = subTitle;
+                $programme.querySelector('[slot="episode-number"]').textContent = episodeNumber;
                 $programme.querySelector('[slot="image"]').src = image;
                 $programme.querySelector('[slot="categories"]').innerHTML = categories;
                 $programme.querySelector('[slot="description"]').textContent = description;
@@ -61,6 +64,7 @@
 
             const $programmes = xmltv.programmes?.map(programme => {
                 const title = programme.title;
+                const episodeNumber = getEpisodeNumber(programme.episodeNum);
                 const subTitle = programme.subTitle;
                 const image = programme.icon[0].src;
                 const categories = programme.category.map(category => getPill(category).outerHTML).join('')
@@ -73,7 +77,7 @@
                 const progress = Date.now() - start.getTime();
                 const realTimeProgress = `<progress value="${progress}" max="${total}" />`
 
-                const $programme = initProgrammeElement(title, subTitle, image, categories, description, time, realTimeProgress);
+                const $programme = initProgrammeElement(title, subTitle, episodeNumber, image, categories, description, time, realTimeProgress);
 
                 return $programme;
             });
@@ -92,6 +96,36 @@
                 `;
                 $pill.textContent = category;
                 return $pill;
+            }
+
+            function getEpisodeNumber(episodeNum) {
+                if (episodeNum && episodeNum.length > 0) {
+                    const onscreenEpisodeNum = episodeNum.find(({ system }) => system === 'onscreen');
+                    if (onscreenEpisodeNum !== undefined) {
+                        return onscreenEpisodeNum._value;
+                    }
+                    else {
+                        const formattedEpisodeNumber = formatEpisodeNumberNs(episodeNum[0]._value);
+                        if (formattedEpisodeNumber !== null) {
+                            return formattedEpisodeNumber;
+                        }
+                    }
+                }
+            }
+
+            function formatEpisodeNumberNs(xmltvNsEpisodeNumber) {
+                const parts = xmltvNsEpisodeNumber.split('.');
+                if (parts.length !== 3) { return null; }
+
+                const seasonNumber = `${Number.parseInt(parts[0].split('/')[0]) + 1}`.padStart(2, '0');
+                const episodeNumber = `${Number.parseInt(parts[1].split('/')[0]) + 1}`.padStart(2, '0');
+
+                let result = `S${seasonNumber}E${episodeNumber}`;
+                if (parts[2].length > 0) {
+                    result += ` (${parts[2]})`;
+                }
+
+                return result;
             }
         </script>
     </main>
