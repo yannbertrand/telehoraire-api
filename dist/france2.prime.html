@@ -25,7 +25,10 @@
                     <img slot="image" src="" alt="" width="60" height="140"
                         style="width: 60px; height: 140px; object-fit: cover; border-radius: var(--pico-border-radius);">
                     <div>
-                        <h3 slot="title">PROGRAMME TITLE</h3>
+                        <hgroup>
+                            <h3 slot="title">PROGRAMME TITLE</h3>
+                            <p slot="sub-title"></p>
+                        </hgroup>
                         <div slot="categories" style="display: flex; flex-wrap: wrap; gap: var(--pico-grid-column-gap)">
                         </div>
                         <p slot="description" style="padding-top: var(--pico-spacing); color: var(--pico-muted-color)">
@@ -42,10 +45,11 @@
             const $container = document.getElementById('programmes');
             const $programmeTemplate = document.getElementById('programme');
 
-            function initProgrammeElement(title, image, categories, description, time, realTimeProgress) {
+            function initProgrammeElement(title, subTitle, image, categories, description, time, realTimeProgress) {
                 const $programme = $programmeTemplate.content.cloneNode(true)
 
                 $programme.querySelector('[slot="title"]').textContent = title;
+                $programme.querySelector('[slot="sub-title"]').textContent = subTitle;
                 $programme.querySelector('[slot="image"]').src = image;
                 $programme.querySelector('[slot="categories"]').innerHTML = categories;
                 $programme.querySelector('[slot="description"]').textContent = description;
@@ -57,6 +61,7 @@
 
             const $programmes = xmltv.programmes?.map(programme => {
                 const title = programme.title;
+                const subTitle = programme.subTitle;
                 const image = programme.icon[0].src;
                 const categories = programme.category.map(category => getPill(category).outerHTML).join('')
                 const description = programme.desc;
@@ -68,7 +73,7 @@
                 const progress = Date.now() - start.getTime();
                 const realTimeProgress = `<progress value="${progress}" max="${total}" />`
 
-                const $programme = initProgrammeElement(title, image, categories, description, time, realTimeProgress);
+                const $programme = initProgrammeElement(title, subTitle, image, categories, description, time, realTimeProgress);
 
                 return $programme;
             });
