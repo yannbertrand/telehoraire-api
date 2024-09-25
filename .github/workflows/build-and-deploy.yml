@@ -36,6 +36,7 @@ jobs:
         run: npm run build
         env:
           SOURCE_XMLTV_URL: ${{ vars.SOURCE_XMLTV_URL }}
+          DESTINATION_JSON_FOLDER: "dist"
           TZ: ${{ vars.TZ }}
       - name: Setup Pages
         uses: actions/configure-pages@v5
