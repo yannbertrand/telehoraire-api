@@ -56,7 +56,7 @@ describe('#parseXmltvTextContent', () => {
 
 			// then
 			expect(result.generatorInfoUrl).toBe(
-				'https://github.com/yannbertrand/telehoraire',
+				'https://github.com/yannbertrand/telehoraire-api',
 			);
 		});
 	});

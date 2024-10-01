@@ -10,7 +10,7 @@ import type { Xmltv } from '../types/xmltv.i18n.ts';
 export function parseXmltvTextContent(xmltvTextContent: string): Xmltv {
 	const xmltv = parseXmltv(xmltvTextContent);
 	xmltv.generatorInfoName = 'Téléhoraire';
-	xmltv.generatorInfoUrl = 'https://github.com/yannbertrand/telehoraire';
+	xmltv.generatorInfoUrl = 'https://github.com/yannbertrand/telehoraire-api';
 
 	return xmltv;
 }
