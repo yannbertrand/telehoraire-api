@@ -12,10 +12,10 @@
 	},
 	"license": "MIT",
 	"dependencies": {
-		"@iptv/xmltv": "^1.0.1"
+		"@iptv/xmltv": "1.0.1"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "^1.9.2",
-		"vitest": "^2.1.1"
+		"@biomejs/biome": "1.9.2",
+		"vitest": "2.1.1"
 	}
 }
