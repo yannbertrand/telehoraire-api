@@ -1,4 +1,11 @@
 {
 	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
-	"extends": ["config:js-app", ":automergeMinor"]
+	"extends": ["config:js-app", ":automergeMinor"],
+	"packageRules": [
+		{
+			"matchPackageNames": ["/^node$/"],
+			"matchUpdateTypes": ["minor", "patch"],
+			"automerge": true
+		}
+	]
 }
