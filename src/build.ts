@@ -1,10 +1,9 @@
-import { getConfig } from './config.ts';
-import { fetchXmltvFile } from './fetch.ts';
-import { parseXmltvTextContent } from './parse.ts';
-
 import { writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
+import { getConfig } from './config.ts';
+import { fetchXmltvFile } from './fetch.ts';
 import { localize } from './localize.ts';
+import { parseXmltvTextContent } from './parse.ts';
 import { filterChannel } from './transforms/filter-channel.ts';
 import { getTonightPrime } from './transforms/tonight-prime.ts';
 
